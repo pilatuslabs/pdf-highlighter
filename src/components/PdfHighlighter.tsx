@@ -31,6 +31,7 @@ import type {
 import { HighlightLayer } from "./HighlightLayer";
 import { MouseSelection } from "./MouseSelection";
 import { TipContainer } from "./TipContainer";
+import { Sidebar } from "./Sidebar";
 
 export type T_ViewportHighlight<T_HT> = { position: Position } & T_HT;
 
@@ -555,16 +556,18 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
   debouncedScaleValue: () => void = debounce(this.handleScaleValue, 500);
 
   render() {
-    const { onSelectionFinished, enableAreaSelection } = this.props;
+    const { onSelectionFinished, enableAreaSelection, highlights } = this.props;
 
     return (
       <div onPointerDown={this.onMouseDown}>
         <div
+          style={{ display: "flex" }}
           ref={this.containerNodeRef}
           className={styles.container}
           onContextMenu={(e) => e.preventDefault()}
         >
-          <div className="pdfViewer" />
+          <div className={`pdfViewer ${styles.pdfViewer}`} />
+
           {this.renderTip()}
           {typeof enableAreaSelection === "function" ? (
             <MouseSelection
@@ -633,6 +636,7 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
               }}
             />
           ) : null}
+          <Sidebar highlights={highlights} />
         </div>
       </div>
     );
