@@ -11,28 +11,17 @@ const updateHash = (highlight: IHighlight) => {
 };
 
 export function Sidebar({ highlights }: Props) {
-  const renderHighlight = (highlight: IHighlight, index: number) => {
+  const renderHighlight = (highlight: IHighlight) => {
     return (
       <li
-        key={index}
         className={styles.sidebar__highlight}
         onClick={() => {
           updateHash(highlight);
         }}
-        style={{
-          top: `${
-            highlight.position.boundingRect.y1 +
-            (highlight.position.pageNumber - 1) *
-              highlight.position.boundingRect.height
-          }px`,
-        }}
       >
         <div>
-          <strong>{highlight.comment.text}</strong>
           {highlight.content.text ? (
-            <blockquote style={{ marginTop: "0.5rem" }}>
-              {`${highlight.content.text.slice(0, 90).trim()}…`}
-            </blockquote>
+            <p style={{ marginTop: "0.5rem" }}>{highlight.content.text}</p>
           ) : null}
           {highlight.content.image ? (
             <div
@@ -52,9 +41,21 @@ export function Sidebar({ highlights }: Props) {
   return (
     <div className={styles.sidebar} style={{ width: "25vw" }}>
       <ul className={styles.sidebar__highlights}>
-        {highlights.map((highlight, index) =>
-          renderHighlight(highlight, index),
-        )}
+        {highlights.map((highlight) => (
+          <div
+            key={highlight.id}
+            style={{
+              height: `${highlight.position.boundingRect.height}px`,
+              position: "absolute",
+              top: `${
+                (highlight.position.pageNumber - 1) *
+                highlight.position.boundingRect.height
+              }px`,
+            }}
+          >
+            {renderHighlight(highlight)}
+          </div>
+        ))}
       </ul>
     </div>
   );

@@ -1,13 +1,6 @@
 import type { PDFViewer } from "pdfjs-dist/web/pdf_viewer.mjs";
 import { viewportToScaled } from "../lib/coordinates";
-import type {
-  IHighlight,
-  LTWH,
-  LTWHP,
-  Position,
-  Scaled,
-  ScaledPosition,
-} from "../types";
+import type { IHighlight, LTWH, Position, ScaledPosition } from "../types";
 import type {
   IHighlightTransformParams,
   T_ViewportHighlight,
@@ -17,7 +10,9 @@ interface HighlightLayerProps<T_HT> {
   highlightsByPage: { [pageNumber: string]: Array<T_HT> };
   pageNumber: string;
   scrolledToHighlightId: string;
-  highlightTransform: (params: IHighlightTransformParams<T_HT>) => JSX.Element;
+  highlightTransform: (
+    params: IHighlightTransformParams<T_HT>,
+  ) => JSX.Element | null;
   tip: {
     highlight: T_ViewportHighlight<T_HT>;
     callback: (highlight: T_ViewportHighlight<T_HT>) => JSX.Element;

@@ -66,7 +66,9 @@ export interface IHighlightTransformParams<T_HT> {
 }
 
 interface Props<T_HT> {
-  highlightTransform: (params: IHighlightTransformParams<T_HT>) => JSX.Element;
+  highlightTransform: (
+    params: IHighlightTransformParams<T_HT>,
+  ) => JSX.Element | null;
   highlights: Array<T_HT>;
   onScrollChange: () => void;
   scrollRef: (scrollTo: (highlight: T_HT) => void) => void;

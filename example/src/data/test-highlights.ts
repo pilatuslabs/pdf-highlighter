@@ -1,5 +1,7 @@
+// highlights per line
 export const testHighlights = {
-  "https://arxiv.org/pdf/1708.08021": [
+  url: "https://arxiv.org/pdf/1708.08021",
+  highlights: [
     {
       content: {
         text: " Type Checking for JavaScript",
@@ -34,8 +36,10 @@ export const testHighlights = {
     {
       content: {
         text: " millions of lines of code atFacebookevery day",
-      },
+      }, // this would be undefined if isPageFeedback is true
       position: {
+        pageNumber: 1,
+        // these two below we gonna talk about them later when we want to have highlights
         boundingRect: {
           x1: 353.080810546875,
           y1: 346.390625,
@@ -54,13 +58,9 @@ export const testHighlights = {
             height: 1200,
           },
         ],
-        pageNumber: 1,
-      },
-      comment: {
-        text: "impressive",
-        emoji: "",
       },
       id: "812807243318874",
+      isPageFeedback: false,
     },
     {
       content: {
@@ -277,41 +277,6 @@ export const testHighlights = {
         ],
         pageNumber: 3,
       },
-    },
-  ],
-  "https://arxiv.org/pdf/1604.02480": [
-    {
-      content: {
-        text: "SSA",
-      },
-      position: {
-        boundingRect: {
-          x1: 816.4599609375,
-          y1: 360.1875,
-          x2: 848.4677734375,
-          y2: 380.1875,
-          width: 1019.9999999999999,
-          height: 1319.9999999999998,
-          pageNumber: 1,
-        },
-        rects: [
-          {
-            x1: 816.4599609375,
-            y1: 360.1875,
-            x2: 848.4677734375,
-            y2: 380.1875,
-            width: 1019.9999999999999,
-            height: 1319.9999999999998,
-            pageNumber: 1,
-          },
-        ],
-        pageNumber: 1,
-      },
-      comment: {
-        text: "Static Single Assignment",
-        emoji: "😎",
-      },
-      id: "29668244118038056",
     },
   ],
 };

@@ -9,6 +9,7 @@ body {
 
 .sidebar {
   color: rgb(119, 119, 119);
+  width: 25vw;
 }
 
 .sidebar__highlights {

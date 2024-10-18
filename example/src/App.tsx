@@ -8,16 +8,20 @@ import {
   Popup,
   Tip,
 } from "./react-pdf-highlighter";
-import type { IHighlight, NewHighlight } from "./react-pdf-highlighter";
+import type {
+  IHighlight,
+  IPdfAndHighlights,
+  NewHighlight,
+} from "./react-pdf-highlighter";
 
 import { Spinner } from "./Spinner";
-import { testHighlights as _testHighlights } from "./test-highlights";
+import { testHighlights as _testHighlights } from "./data/test-feedback";
 
 import "./style/App.css";
 import "../../dist/style.css";
 import type { PDFDocumentProxy } from "pdfjs-dist";
 
-const testHighlights: Record<string, Array<IHighlight>> = _testHighlights;
+const testHighlights: IPdfAndHighlights = _testHighlights;
 
 const getNextId = () => String(Math.random()).slice(2);
 
@@ -28,26 +32,10 @@ const resetHash = () => {
   document.location.hash = "";
 };
 
-const HighlightPopup = ({
-  comment,
-}: {
-  comment: { text: string; emoji: string };
-}) =>
-  comment.text ? (
-    <div className="Highlight__popup">
-      {comment.emoji} {comment.text}
-    </div>
-  ) : null;
-
-const PRIMARY_PDF_URL = "https://arxiv.org/pdf/1708.08021";
-
-const searchParams = new URLSearchParams(document.location.search);
-const initialUrl = searchParams.get("url") || PRIMARY_PDF_URL;
-
 export function App() {
-  const [url] = useState(initialUrl);
+  const [url] = useState(testHighlights.url);
   const [highlights, setHighlights] = useState<Array<IHighlight>>(
-    testHighlights[initialUrl] ? [...testHighlights[initialUrl]] : []
+    testHighlights.highlights ? [...testHighlights.highlights] : [],
   );
 
   const scrollViewerTo = useRef((highlight: IHighlight) => {
@@ -79,7 +67,7 @@ export function App() {
   const addHighlight = (highlight: NewHighlight) => {
     console.log("Saving highlight", highlight);
     setHighlights((prevHighlights) => [
-      { ...highlight, id: getNextId() },
+      { ...highlight, id: getNextId(), isPageFeedback: true }, // TODO : We're assuming page feedback , remove this assumption later.
       ...prevHighlights,
     ]);
   };
@@ -115,21 +103,23 @@ export function App() {
           hideTip,
           isScrolledTo,
         }) => {
+          const isPageFeedback = highlight.isPageFeedback;
+          if (isPageFeedback) {
+            return null;
+          }
           const isTextHighlight = !highlight.content?.image;
 
           const component = isTextHighlight ? (
             <Highlight
               isScrolledTo={isScrolledTo}
               position={highlight.position}
-              comment={highlight.comment}
             />
           ) : (
             <AreaHighlight isScrolledTo={isScrolledTo} highlight={highlight} />
           );
-
           return (
             <Popup
-              popupContent={<HighlightPopup {...highlight} />}
+              popupContent={<div>popup remove it later</div>}
               onMouseOver={(popupContent) =>
                 setTip(highlight, () => popupContent)
               }
@@ -146,10 +136,8 @@ export function App() {
   };
 
   return (
-    <div className="App" style={{ display: "flex", height: "100vh" }}>
-      <PdfLoader url={url} beforeLoad={<Spinner />}>
-        {(pdfDocument) => renderPage(pdfDocument)}
-      </PdfLoader>
-    </div>
+    <PdfLoader url={url} beforeLoad={<Spinner />}>
+      {(pdfDocument) => renderPage(pdfDocument)}
+    </PdfLoader>
   );
 }

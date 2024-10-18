@@ -44,13 +44,14 @@ export interface HighlightContent {
   content: Content;
 }
 
+// TODO : Probably remove this as we do not need comments
 export interface Comment {
-  text: string;
-  emoji: string;
+  text?: string;
+  emoji?: string;
 }
-
+// TODO : Probably remove this as we do not need comments
 export interface HighlightComment {
-  comment: Comment;
+  comment?: Comment;
 }
 
 export interface NewHighlight extends HighlightContent, HighlightComment {
@@ -59,6 +60,12 @@ export interface NewHighlight extends HighlightContent, HighlightComment {
 
 export interface IHighlight extends NewHighlight {
   id: string;
+  isPageFeedback: boolean;
+}
+// highlights are the equivalent of feedbacks in the backend ( should be transformed after fetching data )
+export interface IPdfAndHighlights {
+  url: string;
+  highlights: Array<IHighlight>;
 }
 
 export interface ViewportHighlight extends HighlightContent, HighlightComment {
