@@ -8,12 +8,7 @@ import {
   Popup,
   Tip,
 } from "./react-pdf-highlighter";
-import type {
-  Content,
-  IHighlight,
-  NewHighlight,
-  ScaledPosition,
-} from "./react-pdf-highlighter";
+import type { IHighlight, NewHighlight } from "./react-pdf-highlighter";
 
 import { Spinner } from "./Spinner";
 import { testHighlights as _testHighlights } from "./test-highlights";
@@ -52,7 +47,7 @@ const initialUrl = searchParams.get("url") || PRIMARY_PDF_URL;
 export function App() {
   const [url] = useState(initialUrl);
   const [highlights, setHighlights] = useState<Array<IHighlight>>(
-    testHighlights[initialUrl] ? [...testHighlights[initialUrl]] : [],
+    testHighlights[initialUrl] ? [...testHighlights[initialUrl]] : []
   );
 
   const scrollViewerTo = useRef((highlight: IHighlight) => {
@@ -89,32 +84,6 @@ export function App() {
     ]);
   };
 
-  const updateHighlight = (
-    highlightId: string,
-    position: Partial<ScaledPosition>,
-    content: Partial<Content>,
-  ) => {
-    console.log("Updating highlight", highlightId, position, content);
-    setHighlights((prevHighlights) =>
-      prevHighlights.map((h) => {
-        const {
-          id,
-          position: originalPosition,
-          content: originalContent,
-          ...rest
-        } = h;
-        return id === highlightId
-          ? {
-              id,
-              position: { ...originalPosition, ...position },
-              content: { ...originalContent, ...content },
-              ...rest,
-            }
-          : h;
-      }),
-    );
-  };
-
   const renderPage = (pdfDocument: PDFDocumentProxy) => {
     return (
       <PdfHighlighter
@@ -139,15 +108,13 @@ export function App() {
             }}
           />
         )}
-        highlightTransform={(
+        highlightTransform={({
           highlight,
           index,
           setTip,
           hideTip,
-          viewportToScaled,
-          screenshot,
           isScrolledTo,
-        ) => {
+        }) => {
           const isTextHighlight = !highlight.content?.image;
 
           const component = isTextHighlight ? (
@@ -157,17 +124,7 @@ export function App() {
               comment={highlight.comment}
             />
           ) : (
-            <AreaHighlight
-              isScrolledTo={isScrolledTo}
-              highlight={highlight}
-              onChange={(boundingRect) => {
-                updateHighlight(
-                  highlight.id,
-                  { boundingRect: viewportToScaled(boundingRect) },
-                  { image: screenshot(boundingRect) },
-                );
-              }}
-            />
+            <AreaHighlight isScrolledTo={isScrolledTo} highlight={highlight} />
           );
 
           return (

@@ -38,7 +38,6 @@
   },
   "dependencies": {
     "pdfjs-dist": "4.4.168",
-    "react-rnd": "^10.4.11",
     "ts-debounce": "^4.0.0"
   },
   "repository": {

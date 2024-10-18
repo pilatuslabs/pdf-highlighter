@@ -1,60 +1,35 @@
-import { Rnd } from "react-rnd";
-import { getPageFromElement } from "../lib/pdfjs-dom";
 import styles from "../style/AreaHighlight.module.css";
-import type { LTWHP, ViewportHighlight } from "../types";
+import type { ViewportHighlight } from "../types";
 
 interface Props {
   highlight: ViewportHighlight;
-  onChange: (rect: LTWHP) => void;
   isScrolledTo: boolean;
 }
 
 export function AreaHighlight({
   highlight,
-  onChange,
   isScrolledTo,
   ...otherProps
 }: Props) {
+  const { top, left, width, height } = highlight.position.boundingRect;
+
   return (
     <div
-      className={`${styles.areaHighlight} ${
+      className={`${styles.areaHighlight} ${styles.part} ${
         isScrolledTo ? styles.scrolledTo : ""
       }`}
-    >
-      <Rnd
-        className={styles.part}
-        onDragStop={(_, data) => {
-          const boundingRect: LTWHP = {
-            ...highlight.position.boundingRect,
-            top: data.y,
-            left: data.x,
-          };
-          onChange(boundingRect);
-        }}
-        onResizeStop={(_mouseEvent, _direction, ref, _delta, position) => {
-          const boundingRect: LTWHP = {
-            top: position.y,
-            left: position.x,
-            width: ref.offsetWidth,
-            height: ref.offsetHeight,
-            pageNumber: getPageFromElement(ref)?.number || -1,
-          };
-          onChange(boundingRect);
-        }}
-        position={{
-          x: highlight.position.boundingRect.left,
-          y: highlight.position.boundingRect.top,
-        }}
-        size={{
-          width: highlight.position.boundingRect.width,
-          height: highlight.position.boundingRect.height,
-        }}
-        onClick={(event: React.MouseEvent) => {
-          event.stopPropagation();
-          event.preventDefault();
-        }}
-        {...otherProps}
-      />
-    </div>
+      style={{
+        top: `${top}px`,
+        left: `${left}px`,
+        width: `${width}px`,
+        height: `${height}px`,
+        position: "absolute", // Ensure the highlight is positioned correctly
+      }}
+      onClick={(event: React.MouseEvent<HTMLDivElement>) => {
+        event.stopPropagation();
+        event.preventDefault();
+      }}
+      {...otherProps}
+    />
   );
 }

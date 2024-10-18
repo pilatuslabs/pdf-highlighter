@@ -8,24 +8,16 @@ import type {
   Scaled,
   ScaledPosition,
 } from "../types";
-import type { T_ViewportHighlight } from "./PdfHighlighter";
+import type {
+  IHighlightTransformParams,
+  T_ViewportHighlight,
+} from "./PdfHighlighter";
 
 interface HighlightLayerProps<T_HT> {
   highlightsByPage: { [pageNumber: string]: Array<T_HT> };
   pageNumber: string;
   scrolledToHighlightId: string;
-  highlightTransform: (
-    highlight: T_ViewportHighlight<T_HT>,
-    index: number,
-    setTip: (
-      highlight: T_ViewportHighlight<T_HT>,
-      callback: (highlight: T_ViewportHighlight<T_HT>) => JSX.Element,
-    ) => void,
-    hideTip: () => void,
-    viewportToScaled: (rect: LTWHP) => Scaled,
-    screenshot: (position: LTWH) => string,
-    isScrolledTo: boolean,
-  ) => JSX.Element;
+  highlightTransform: (params: IHighlightTransformParams<T_HT>) => JSX.Element;
   tip: {
     highlight: T_ViewportHighlight<T_HT>;
     callback: (highlight: T_ViewportHighlight<T_HT>) => JSX.Element;
@@ -69,25 +61,25 @@ export function HighlightLayer<T_HT extends IHighlight>({
 
         const isScrolledTo = Boolean(scrolledToHighlightId === highlight.id);
 
-        return highlightTransform(
-          viewportHighlight,
+        return highlightTransform({
+          highlight: viewportHighlight,
           index,
-          (highlight, callback) => {
+          setTip: (highlight, callback) => {
             setTip({ highlight, callback });
             showTip(highlight, callback(highlight));
           },
-          hideTipAndSelection,
-          (rect) => {
+          hideTip: hideTipAndSelection,
+          viewportToScaled: (rect) => {
             const viewport = viewer.getPageView(
               (rect.pageNumber || Number.parseInt(pageNumber)) - 1,
             ).viewport;
 
             return viewportToScaled(rect, viewport);
           },
-          (boundingRect) =>
+          screenshot: (boundingRect) =>
             screenshot(boundingRect, Number.parseInt(pageNumber)),
           isScrolledTo,
-        );
+        });
       })}
     </div>
   );

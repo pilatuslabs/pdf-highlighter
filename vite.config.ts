@@ -20,7 +20,6 @@ export default defineConfig({
         "react/jsx-runtime",
         "react-dom",
         "react-dom/client",
-        "react-rnd",
         "pdfjs-dist",
         "pdfjs-dist/web",
         "debounce",

@@ -52,19 +52,21 @@ interface State<T_HT> {
   scrolledToHighlightId: string;
 }
 
-interface Props<T_HT> {
-  highlightTransform: (
+export interface IHighlightTransformParams<T_HT> {
+  highlight: T_ViewportHighlight<T_HT>;
+  index: number;
+  setTip: (
     highlight: T_ViewportHighlight<T_HT>,
-    index: number,
-    setTip: (
-      highlight: T_ViewportHighlight<T_HT>,
-      callback: (highlight: T_ViewportHighlight<T_HT>) => JSX.Element,
-    ) => void,
-    hideTip: () => void,
-    viewportToScaled: (rect: LTWHP) => Scaled,
-    screenshot: (position: LTWH) => string,
-    isScrolledTo: boolean,
-  ) => JSX.Element;
+    callback: (highlight: T_ViewportHighlight<T_HT>) => JSX.Element,
+  ) => void;
+  hideTip: () => void;
+  viewportToScaled: (rect: LTWHP) => Scaled;
+  screenshot: (position: LTWH) => string;
+  isScrolledTo: boolean;
+}
+
+interface Props<T_HT> {
+  highlightTransform: (params: IHighlightTransformParams<T_HT>) => JSX.Element;
   highlights: Array<T_HT>;
   onScrollChange: () => void;
   scrollRef: (scrollTo: (highlight: T_HT) => void) => void;
