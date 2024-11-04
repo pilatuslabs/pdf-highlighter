@@ -1,4 +1,3 @@
-import styles from "../style/AreaHighlight.module.css";
 import type { ViewportHighlight } from "../types";
 
 interface Props {
@@ -15,15 +14,14 @@ export function AreaHighlight({
 
   return (
     <div
-      className={`${styles.areaHighlight} ${styles.part} ${
-        isScrolledTo ? styles.scrolledTo : ""
-      }`}
+      className={`absolute border border-gray-800 ${
+        isScrolledTo ? "bg-red-500" : "bg-yellow-300"
+      } transition-colors mix-blend-multiply`}
       style={{
         top: `${top}px`,
         left: `${left}px`,
         width: `${width}px`,
         height: `${height}px`,
-        position: "absolute", // Ensure the highlight is positioned correctly
       }}
       onClick={(event: React.MouseEvent<HTMLDivElement>) => {
         event.stopPropagation();
