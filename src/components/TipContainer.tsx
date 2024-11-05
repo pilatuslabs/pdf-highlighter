@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import styles from "../style/TipContainer.module.css";
 import type { LTWHP } from "../types";
 
 interface Props {
@@ -64,7 +63,7 @@ export function TipContainer({
   return (
     <div
       id="PdfHighlighter__tip-container"
-      className={styles.tipContainer}
+      className="z-50 absolute"
       style={{
         visibility: isStyleCalculationInProgress ? "hidden" : "visible",
         top,

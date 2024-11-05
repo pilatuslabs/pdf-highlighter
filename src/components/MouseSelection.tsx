@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { isHTMLElement } from "../lib/pdfjs-dom";
-import styles from "../style/MouseSelection.module.css";
 import type { LTWH } from "../types.js";
 
 interface Coords {
@@ -80,8 +79,7 @@ export function MouseSelection({
       return {
         x: pageX - containerBoundingRect.left + container.scrollLeft,
         y:
-          pageY -
-          containerBoundingRect.top +
+          pageY - containerBoundingRect.top +
           container.scrollTop -
           window.scrollY,
       };
@@ -159,7 +157,7 @@ export function MouseSelection({
     <div ref={rootRef}>
       {start && end && (
         <div
-          className={styles.mouseSelection}
+          className="absolute border border-dashed border-gray-800 bg-yellow-300 mix-blend-multiply"
           style={getBoundingRect(start, end)}
         />
       )}

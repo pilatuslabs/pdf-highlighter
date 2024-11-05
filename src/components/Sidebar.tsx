@@ -1,7 +1,5 @@
 import type { IHighlight } from "../types";
 
-import styles from "../style/Sidebar.module.css";
-
 interface Props {
   highlights: Array<IHighlight>;
 }
@@ -14,7 +12,7 @@ export function Sidebar({ highlights }: Props) {
   const renderHighlight = (highlight: IHighlight) => {
     return (
       <li
-        className={styles.sidebar__highlight}
+        className="flex justify-between cursor-pointer transition-background duration-140 border-b border-gray-500 sticky top-0 p-2.5 pb-4 hover:bg-[rgba(58,56,52,0.08)]"
         onClick={() => {
           updateHash(highlight);
         }}
@@ -25,22 +23,22 @@ export function Sidebar({ highlights }: Props) {
           ) : null}
           {highlight.content.image ? (
             <div
-              className={styles.highlight__image}
+              className="overflow-auto max-w-[300px] border border-dashed"
               style={{ marginTop: "0.5rem" }}
             >
               <img src={highlight.content.image} alt={"Screenshot"} />
             </div>
           ) : null}
         </div>
-        <div className={styles.highlight__location}>
+        <div className="mt-2 text-right text-xs self-end">
           Page {highlight.position.pageNumber}
         </div>
       </li>
     );
   };
   return (
-    <div className={styles.sidebar} style={{ width: "25vw" }}>
-      <ul className={styles.sidebar__highlights}>
+    <div className="text-gray-500 w-[25vw]" style={{ width: "25vw" }}>
+      <ul className="list-none p-0">
         {highlights.map((highlight) => (
           <div
             key={highlight.id}

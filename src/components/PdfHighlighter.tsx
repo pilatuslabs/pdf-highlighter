@@ -19,7 +19,6 @@ import {
   getWindow,
   isHTMLElement,
 } from "../lib/pdfjs-dom";
-import styles from "../style/PdfHighlighter.module.css";
 import type {
   IHighlight,
   LTWH,
@@ -211,7 +210,7 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
 
     return findOrCreateContainerLayer(
       textLayer.div,
-      `PdfHighlighter__highlight-layer ${styles.highlightLayer}`,
+      "PdfHighlighter__highlight-layer absolute z-3 left-0",
       ".PdfHighlighter__highlight-layer",
     );
   }
@@ -548,7 +547,8 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
     if (!this.viewer.viewer) {
       return;
     }
-    this.viewer.viewer.classList.toggle(styles.disableSelection, flag);
+    this.viewer.viewer.classList.toggle("select-none", flag);
+    this.viewer.viewer.classList.toggle("pointer-events-none", flag);
   }
 
   handleScaleValue = () => {
@@ -567,10 +567,10 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
         <div
           style={{ display: "flex" }}
           ref={this.containerNodeRef}
-          className={styles.container}
+          className="absolute overflow-auto w-full h-full"
           onContextMenu={(e) => e.preventDefault()}
         >
-          <div className={`pdfViewer ${styles.pdfViewer}`} />
+          <div className="pdfViewer" />
 
           {this.renderTip()}
           {typeof enableAreaSelection === "function" ? (
@@ -656,12 +656,21 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
       } else {
         const highlightLayer = this.findOrCreateHighlightLayer(pageNumber);
         if (highlightLayer) {
-          const reactRoot = createRoot(highlightLayer);
-          this.highlightRoots[pageNumber] = {
-            reactRoot,
-            container: highlightLayer,
-          };
-          this.renderHighlightLayer(reactRoot, pageNumber);
+          // Check if we already have a root for this page
+          if (!this.highlightRoots[pageNumber]) {
+            const reactRoot = createRoot(highlightLayer);
+            this.highlightRoots[pageNumber] = {
+              reactRoot,
+              container: highlightLayer,
+            };
+            this.renderHighlightLayer(reactRoot, pageNumber);
+          } else {
+            // If we already have a root, just render using that
+            this.renderHighlightLayer(
+              this.highlightRoots[pageNumber].reactRoot,
+              pageNumber,
+            );
+          }
         }
       }
     }

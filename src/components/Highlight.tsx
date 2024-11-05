@@ -1,4 +1,3 @@
-import styles from "../style/Highlight.module.css";
 import type { LTWHP } from "../types.js";
 
 interface Props {
@@ -22,21 +21,23 @@ export function Highlight({
   const { rects } = position;
 
   return (
-    <div
-      className={`Highlight ${styles.highlight} ${
-        isScrolledTo ? styles.scrolledTo : ""
-      }`}
-    >
-      <div className={`Highlight__parts ${styles.parts}`}>
-        {rects.map((rect, index) => (
+    <div className="absolute">
+      <div className="opacity-100">
+        {rects.map((rect) => (
           <div
             onMouseOver={onMouseOver}
             onMouseOut={onMouseOut}
             onClick={onClick}
-            // biome-ignore lint/suspicious/noArrayIndexKey: We can use position hash at some point in future
-            key={index}
-            style={rect}
-            className={`Highlight__part ${styles.part}`}
+            key={rect.left + rect.top + (rect.pageNumber || 0) + rect.height + rect.width}
+            style={{
+              top: `${rect.top}px`,
+              left: `${rect.left}px`,
+              width: `${rect.width}px`,
+              height: `${rect.height}px`,
+            }}
+            className={`absolute ${
+              isScrolledTo ? "bg-red-500" : "bg-yellow-300"
+            } transition-colors`}
           />
         ))}
       </div>

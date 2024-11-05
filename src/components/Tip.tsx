@@ -1,5 +1,4 @@
 import { Component } from "react";
-import styles from "../style/Tip.module.css";
 
 interface State {
   compact: boolean;
@@ -37,7 +36,7 @@ export class Tip extends Component<Props, State> {
       <div>
         {compact ? (
           <div
-            className={styles.compact}
+            className="compact cursor-pointer bg-[#3d464d] border border-[rgba(255,255,255,0.25)] text-white py-1 px-2.5 rounded-md"
             onClick={() => {
               onOpen();
               this.setState({ compact: false });
@@ -47,7 +46,7 @@ export class Tip extends Component<Props, State> {
           </div>
         ) : (
           <form
-            className={styles.card}
+            className="card p-2.5 bg-white bg-clip-padding border border-[#e8e8e8] rounded-md shadow-[0_2px_4px_rgba(37,40,43,0.2)]"
             onSubmit={(event) => {
               event.preventDefault();
               onConfirm({ text, emoji });
@@ -55,6 +54,7 @@ export class Tip extends Component<Props, State> {
           >
             <div>
               <textarea
+                className="text-base w-50 h-[70px]"
                 placeholder="Your comment"
                 // biome-ignore lint/a11y/noAutofocus: This is an example app
                 autoFocus
@@ -86,7 +86,7 @@ export class Tip extends Component<Props, State> {
               </div>
             </div>
             <div>
-              <input type="submit" value="Save" />
+              <input type="submit" value="Save" className="mt-1.25 text-lg" />
             </div>
           </form>
         )}
