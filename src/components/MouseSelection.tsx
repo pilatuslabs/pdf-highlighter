@@ -79,7 +79,8 @@ export function MouseSelection({
       return {
         x: pageX - containerBoundingRect.left + container.scrollLeft,
         y:
-          pageY - containerBoundingRect.top +
+          pageY -
+          containerBoundingRect.top +
           container.scrollTop -
           window.scrollY,
       };

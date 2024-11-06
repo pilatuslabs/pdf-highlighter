@@ -6,21 +6,17 @@ import {
   PdfHighlighter,
   PdfLoader,
   Popup,
+  Sidebar,
+  Spinner,
   Tip,
-} from "./react-pdf-highlighter";
-import type {
-  IHighlight,
-  IPdfAndHighlights,
-  NewHighlight,
-} from "./react-pdf-highlighter";
+} from "./index";
+import type { IHighlight, IPdfAndHighlights, NewHighlight } from "./index";
 
-import { Spinner } from "./Spinner";
-import { testHighlights as _testHighlights } from "./data/test-feedback";
+import { testHighlights as _testHighlights } from "../example/src/data/test-feedback";
 
 import "./style/App.css";
-import "../../dist/style.css";
+import "../dist/style.css";
 import type { PDFDocumentProxy } from "pdfjs-dist";
-import { Sidebar } from "../../src/components/Sidebar";
 
 const testHighlights: IPdfAndHighlights = _testHighlights;
 
@@ -140,7 +136,7 @@ export function App() {
   };
 
   return (
-    <div className="flex ">
+    <div className="flex h-screen">
       <PdfLoader url={url} beforeLoad={<Spinner />}>
         {(pdfDocument) => renderPage(pdfDocument)}
       </PdfLoader>

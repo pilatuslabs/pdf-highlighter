@@ -41,27 +41,14 @@ export function Sidebar({ highlights, currentPage }: Props) {
   const filteredHighlights = highlights.filter(
     (highlight) => highlight.position.pageNumber === currentPage,
   );
-  console.log({ currentPage });
   return (
-    <div className="h-full  text-gray-500 w-[25vw] " style={{ width: "25vw" }}>
+    <div className="h-full  text-gray-500 w-[25vw] ">
       <div className="h-14 border-b border-gray-200 flex items-center px-4 justify-between shadow-sm ">
         <div className="text-sm text-gray-600 ">Page feedback</div>
       </div>
       <ul className="list-none p-0 bg-white ">
         {filteredHighlights.map((highlight) => (
-          <div
-            key={highlight.id}
-            // style={{
-            //   height: `${highlight.position.boundingRect.height}px`,
-            //   position: "absolute",
-            //   top: `${
-            //     (highlight.position.pageNumber - 1) *
-            //     highlight.position.boundingRect.height
-            //   }px`,
-            // }}
-          >
-            {renderHighlight(highlight)}
-          </div>
+          <div key={highlight.id}>{renderHighlight(highlight)}</div>
         ))}
       </ul>
     </div>

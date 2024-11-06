@@ -10,10 +10,6 @@
   width: 75vw;
 }
 
-.page canvas {
-  background-color: #eee;
-}
-
 .textLayer {
   z-index: 2;
   opacity: 1;

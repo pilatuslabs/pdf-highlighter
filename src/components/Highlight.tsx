@@ -28,7 +28,13 @@ export function Highlight({
             onMouseOver={onMouseOver}
             onMouseOut={onMouseOut}
             onClick={onClick}
-            key={rect.left + rect.top + (rect.pageNumber || 0) + rect.height + rect.width}
+            key={
+              rect.left +
+              rect.top +
+              (rect.pageNumber || 0) +
+              rect.height +
+              rect.width
+            }
             style={{
               top: `${rect.top}px`,
               left: `${rect.left}px`,
