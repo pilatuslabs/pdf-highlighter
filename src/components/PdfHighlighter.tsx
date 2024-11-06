@@ -31,6 +31,8 @@ import { HighlightLayer } from "./HighlightLayer";
 import { MouseSelection } from "./MouseSelection";
 import { TipContainer } from "./TipContainer";
 import { Sidebar } from "./Sidebar";
+import { ZoomOut } from "../icons/ZoomOut";
+import { ZoomIn } from "../icons/ZoomIn";
 
 export type T_ViewportHighlight<T_HT> = { position: Position } & T_HT;
 
@@ -81,6 +83,8 @@ interface Props<T_HT> {
   ) => JSX.Element | null;
   enableAreaSelection: (event: MouseEvent) => boolean;
   pdfViewerOptions?: PDFViewerOptions;
+  currentPage: number;
+  updateCurrentPage: (updatedPage: number) => void;
 }
 
 const EMPTY_ID = "empty-id";
@@ -135,6 +139,7 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
       const { ownerDocument: doc } = this.containerNode;
       eventBus.on("textlayerrendered", this.onTextLayerRendered);
       eventBus.on("pagesinit", this.onDocumentReady);
+      eventBus.on("pagechanging", this.onPageChange);
       doc.addEventListener("selectionchange", this.onSelectionChange);
       doc.addEventListener("keydown", this.handleKeyDown);
       doc.defaultView?.addEventListener("resize", this.debouncedScaleValue);
@@ -143,6 +148,7 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
       this.unsubscribe = () => {
         eventBus.off("pagesinit", this.onDocumentReady);
         eventBus.off("textlayerrendered", this.onTextLayerRendered);
+        eventBus.off("pagechanging", this.onPageChange);
         doc.removeEventListener("selectionchange", this.onSelectionChange);
         doc.removeEventListener("keydown", this.handleKeyDown);
         doc.defaultView?.removeEventListener(
@@ -193,7 +199,6 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
     linkService.setDocument(pdfDocument);
     linkService.setViewer(this.viewer);
     this.viewer.setDocument(pdfDocument);
-
     this.attachRef(eventBus);
   }
 
@@ -457,6 +462,16 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
     this.debouncedAfterSelection();
   };
 
+  onPageChange = (e) => {
+    console.log("here");
+    const newCurrentPage = e.pageNumber;
+    const previousPageNumber = this.props.currentPage;
+    if (newCurrentPage !== previousPageNumber) {
+      // this.setState({ currentPage: newCurrentPage });
+      this.props.updateCurrentPage(newCurrentPage);
+    }
+  };
+
   onScroll = () => {
     const { onScrollChange } = this.props;
 
@@ -560,17 +575,43 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
   debouncedScaleValue: () => void = debounce(this.handleScaleValue, 500);
 
   render() {
-    const { onSelectionFinished, enableAreaSelection, highlights } = this.props;
+    const { onSelectionFinished, enableAreaSelection } = this.props;
 
     return (
-      <div onPointerDown={this.onMouseDown}>
+      <div>
+        <div className="h-14 border-b border-gray-200 flex items-center px-4 justify-between shadow-sm ">
+          <div className="flex items-center space-x-4">
+            <button
+              type="button"
+              // onClick={handleZoomIn}
+              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            >
+              {/* <ZoomIn className="w-5 h-5 text-gray-600" /> */}
+              <ZoomOut className="w-5 h-5 text-gray-600" />
+            </button>
+            <button
+              type="button"
+              // onClick={handleZoomOut}
+              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            >
+              <ZoomIn className="w-5 h-5 text-gray-600" />
+            </button>
+            <span className="text-sm text-gray-600">
+              {/* {Math.round(scale * 100)}% */}
+            </span>
+          </div>
+          <div className="text-sm text-gray-600 ">
+            Page {this.props.currentPage}
+          </div>
+        </div>
         <div
+          onPointerDown={this.onMouseDown}
           style={{ display: "flex" }}
           ref={this.containerNodeRef}
-          className="absolute overflow-auto w-full h-full"
+          className="absolute  h-full bg-gray-300 "
           onContextMenu={(e) => e.preventDefault()}
         >
-          <div className="pdfViewer" />
+          <div className="pdfViewer overflow-auto" />
 
           {this.renderTip()}
           {typeof enableAreaSelection === "function" ? (
@@ -640,8 +681,10 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
               }}
             />
           ) : null}
-          <Sidebar highlights={highlights} />
         </div>
+        {/* <div className="w-[25vw]">
+          <Sidebar highlights={highlights} />
+        </div> */}
       </div>
     );
   }

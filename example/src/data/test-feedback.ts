@@ -31,7 +31,7 @@ export const testHighlights = {
         text: "Flow or TypeScript?",
         emoji: "🔥",
       },
-      isPageFeedback: false,
+      isPageFeedback: true,
       id: "8245652131754351",
     },
     {
@@ -60,7 +60,7 @@ export const testHighlights = {
         ],
       },
       id: "812807243318874",
-      isPageFeedback: false,
+      isPageFeedback: true,
     },
     {
       content: {
@@ -102,7 +102,7 @@ export const testHighlights = {
         text: "immersive coding experience!",
         emoji: "",
       },
-      isPageFeedback: false,
+      isPageFeedback: true,
       id: "2599712881412761",
     },
     {
@@ -127,7 +127,7 @@ export const testHighlights = {
         text: "lisp!",
         emoji: "😱",
       },
-      isPageFeedback: false,
+      isPageFeedback: true,
       id: "9120567402727258",
     },
     {
@@ -170,7 +170,7 @@ export const testHighlights = {
         text: "",
         emoji: "",
       },
-      isPageFeedback: false,
+      isPageFeedback: true,
       id: "32839601376722394",
     },
     {
@@ -195,11 +195,11 @@ export const testHighlights = {
         text: "",
         emoji: "",
       },
-      isPageFeedback: false,
+      isPageFeedback: true,
       id: "46570518065661615",
     },
     {
-      isPageFeedback: false,
+      isPageFeedback: true,
       id: "46570518065661616",
       comment: { text: "Fast type checking?!?!", emoji: "😱" },
       content: {

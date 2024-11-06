@@ -20,6 +20,7 @@ import { testHighlights as _testHighlights } from "./data/test-feedback";
 import "./style/App.css";
 import "../../dist/style.css";
 import type { PDFDocumentProxy } from "pdfjs-dist";
+import { Sidebar } from "../../src/components/Sidebar";
 
 const testHighlights: IPdfAndHighlights = _testHighlights;
 
@@ -37,6 +38,7 @@ export function App() {
   const [highlights, setHighlights] = useState<Array<IHighlight>>(
     testHighlights.highlights ? [...testHighlights.highlights] : [],
   );
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
   const scrollViewerTo = useRef((highlight: IHighlight) => {
     // Implement scrolling logic here
@@ -131,13 +133,18 @@ export function App() {
           );
         }}
         highlights={highlights}
+        currentPage={currentPage}
+        updateCurrentPage={(updatedPage) => setCurrentPage(updatedPage)}
       />
     );
   };
 
   return (
-    <PdfLoader url={url} beforeLoad={<Spinner />}>
-      {(pdfDocument) => renderPage(pdfDocument)}
-    </PdfLoader>
+    <div className="flex ">
+      <PdfLoader url={url} beforeLoad={<Spinner />}>
+        {(pdfDocument) => renderPage(pdfDocument)}
+      </PdfLoader>
+      <Sidebar highlights={highlights} currentPage={currentPage} />
+    </div>
   );
 }

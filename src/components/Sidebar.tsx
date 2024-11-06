@@ -2,17 +2,18 @@ import type { IHighlight } from "../types";
 
 interface Props {
   highlights: Array<IHighlight>;
+  currentPage: number;
 }
 
 const updateHash = (highlight: IHighlight) => {
   document.location.hash = `highlight-${highlight.id}`;
 };
 
-export function Sidebar({ highlights }: Props) {
+export function Sidebar({ highlights, currentPage }: Props) {
   const renderHighlight = (highlight: IHighlight) => {
     return (
       <li
-        className="flex justify-between cursor-pointer transition-background duration-140 border-b border-gray-500 sticky top-0 p-2.5 pb-4 hover:bg-[rgba(58,56,52,0.08)]"
+        className="flex justify-between cursor-pointer transition-background duration-140 border-b border-gray-500 sticky top-0 p-2.5 pb-4 hover:bg-[rgba(58,56,52,0.08)] "
         onClick={() => {
           updateHash(highlight);
         }}
@@ -23,7 +24,7 @@ export function Sidebar({ highlights }: Props) {
           ) : null}
           {highlight.content.image ? (
             <div
-              className="overflow-auto max-w-[300px] border border-dashed"
+              className=" max-w-[300px] border border-dashed"
               style={{ marginTop: "0.5rem" }}
             >
               <img src={highlight.content.image} alt={"Screenshot"} />
@@ -36,20 +37,28 @@ export function Sidebar({ highlights }: Props) {
       </li>
     );
   };
+
+  const filteredHighlights = highlights.filter(
+    (highlight) => highlight.position.pageNumber === currentPage,
+  );
+  console.log({ currentPage });
   return (
-    <div className="text-gray-500 w-[25vw]" style={{ width: "25vw" }}>
-      <ul className="list-none p-0">
-        {highlights.map((highlight) => (
+    <div className="h-full  text-gray-500 w-[25vw] " style={{ width: "25vw" }}>
+      <div className="h-14 border-b border-gray-200 flex items-center px-4 justify-between shadow-sm ">
+        <div className="text-sm text-gray-600 ">Page feedback</div>
+      </div>
+      <ul className="list-none p-0 bg-white ">
+        {filteredHighlights.map((highlight) => (
           <div
             key={highlight.id}
-            style={{
-              height: `${highlight.position.boundingRect.height}px`,
-              position: "absolute",
-              top: `${
-                (highlight.position.pageNumber - 1) *
-                highlight.position.boundingRect.height
-              }px`,
-            }}
+            // style={{
+            //   height: `${highlight.position.boundingRect.height}px`,
+            //   position: "absolute",
+            //   top: `${
+            //     (highlight.position.pageNumber - 1) *
+            //     highlight.position.boundingRect.height
+            //   }px`,
+            // }}
           >
             {renderHighlight(highlight)}
           </div>

@@ -9,6 +9,7 @@ body {
     sans-serif;
   background-color: #ffffff;
   color: #fff;
+  overflow: hidden;
 }
 
 .sidebar {
