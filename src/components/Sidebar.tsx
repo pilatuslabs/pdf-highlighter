@@ -1,3 +1,6 @@
+import { useState } from "react";
+import { ChevronDown } from "../icons/ChevronDown";
+import { ChevronUp } from "../icons/ChevronUp";
 import type { IHighlight } from "../types";
 
 interface Props {
@@ -5,52 +8,75 @@ interface Props {
   currentPage: number;
 }
 
-const updateHash = (highlight: IHighlight) => {
-  document.location.hash = `highlight-${highlight.id}`;
-};
-
 export function Sidebar({ highlights, currentPage }: Props) {
+  const [expandedHighlights, setExpandedHighlights] = useState<string[]>([]);
+
+  const toggleHighlight = (id: string) => {
+    setExpandedHighlights((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id],
+    );
+  };
+
   const renderHighlight = (highlight: IHighlight) => {
+    const isExpanded = expandedHighlights.includes(highlight.id);
+
     return (
-      <li
-        className="flex justify-between cursor-pointer transition-background duration-140 border-b border-gray-500 sticky top-0 p-2.5 pb-4 hover:bg-[rgba(58,56,52,0.08)] "
-        onClick={() => {
-          updateHash(highlight);
-        }}
+      <div
+        key={highlight.id}
+        className="bg-white rounded-lg border border-gray-200 overflow-hidden transition-all duration-200 shadow-sm hover:shadow-md"
       >
-        <div>
-          {highlight.content.text ? (
-            <p style={{ marginTop: "0.5rem" }}>{highlight.content.text}</p>
-          ) : null}
-          {highlight.content.image ? (
-            <div
-              className=" max-w-[300px] border border-dashed"
-              style={{ marginTop: "0.5rem" }}
-            >
-              <img src={highlight.content.image} alt={"Screenshot"} />
+        <button
+          type="button"
+          onClick={() => toggleHighlight(highlight.id)}
+          className="w-full flex items-center justify-between p-4 hover:bg-gray-50"
+        >
+          <div className="text-left">
+            <div className="text-xs font-medium text-gray-500">
+              {highlight?.comment?.text}
             </div>
-          ) : null}
-        </div>
-        <div className="mt-2 text-right text-xs self-end">
-          Page {highlight.position.pageNumber}
-        </div>
-      </li>
+            {highlight.content.text && (
+              <div className="text-sm font-medium text-gray-900">
+                {highlight.content.text.slice(0, 20)}...
+              </div>
+            )}
+          </div>
+          {isExpanded ? <ChevronUp /> : <ChevronDown />}
+        </button>
+
+        {isExpanded && (
+          <div className="px-4 pb-4 text-sm text-gray-600 border-t border-gray-100">
+            {highlight.content.text && (
+              <p className="mt-2 leading-relaxed">{highlight.content.text}</p>
+            )}
+            {highlight.content.image && (
+              <div className="mt-2 max-w-[300px] border border-dashed">
+                <img src={highlight.content.image} alt="Screenshot" />
+              </div>
+            )}
+          </div>
+        )}
+      </div>
     );
   };
 
   const filteredHighlights = highlights.filter(
     (highlight) => highlight.position.pageNumber === currentPage,
   );
+
   return (
-    <div className="h-full  text-gray-500 w-[25vw] ">
-      <div className="h-14 border-b border-gray-200 flex items-center px-4 justify-between shadow-sm ">
-        <div className="text-sm text-gray-600 ">Page feedback</div>
+    <div className="h-full text-gray-500 w-[25vw] bg-gray-100 ">
+      <div className="h-14 border-b border-gray-200 flex items-center px-4 justify-between shadow-sm bg-white">
+        <div className="text-sm text-gray-600">Page feedback</div>
       </div>
-      <ul className="list-none p-0 bg-white ">
-        {filteredHighlights.map((highlight) => (
-          <div key={highlight.id}>{renderHighlight(highlight)}</div>
-        ))}
-      </ul>
+      <div className="p-4 space-y-3 ">
+        {filteredHighlights.length > 0 ? (
+          filteredHighlights.map((highlight) => renderHighlight(highlight))
+        ) : (
+          <div className="text-center py-8 text-gray-500">
+            No feedback for this page
+          </div>
+        )}
+      </div>
     </div>
   );
 }

@@ -95,7 +95,7 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
   State<T_HT>
 > {
   static defaultProps = {
-    pdfScaleValue: "page-fit",
+    pdfScaleValue: "auto",
   };
 
   state: State<T_HT> = {
@@ -577,7 +577,7 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
 
   handleZoomIn = () => {
     if (this.viewer) {
-      this.viewer.increaseScale();
+      this.viewer.increaseScale({ steps: 1 });
       this.setState({
         currentScale: Math.round(this.viewer.currentScale * 100),
       });
@@ -586,7 +586,7 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
 
   handleZoomOut = () => {
     if (this.viewer) {
-      this.viewer.decreaseScale();
+      this.viewer.decreaseScale({ steps: 1 });
       this.setState({
         currentScale: Math.round(this.viewer.currentScale * 100),
       });
