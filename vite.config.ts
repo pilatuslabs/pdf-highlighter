@@ -19,15 +19,6 @@ export default defineConfig({
             : assetInfo.name || "asset-[name]-[hash].[ext]";
         },
       },
-      external: [
-        "react",
-        "react/jsx-runtime",
-        "react-dom",
-        "react-dom/client",
-        "pdfjs-dist",
-        "pdfjs-dist/web",
-        "debounce",
-      ],
     },
   },
 });
