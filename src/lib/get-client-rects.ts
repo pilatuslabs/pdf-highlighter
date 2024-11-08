@@ -1,5 +1,5 @@
-import type { LTWHP, Page } from "../types.js";
-import { optimizeClientRects } from "./optimize-client-rects";
+import type { LTWHP, Page } from "@pdf-reader/types";
+import { optimizeClientRects } from "@pdf-reader/lib/optimize-client-rects";
 
 const isClientRectInsidePageRect = (clientRect: DOMRect, pageRect: DOMRect) => {
   if (clientRect.top < pageRect.top) {

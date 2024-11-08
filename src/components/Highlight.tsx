@@ -1,4 +1,4 @@
-import type { LTWHP } from "../types.js";
+import type { LTWHP } from "@pdf-reader/types";
 
 interface Props {
   position: {

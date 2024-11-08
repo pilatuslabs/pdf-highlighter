@@ -1,26 +1,30 @@
-import type { PDFDocumentProxy } from "pdfjs-dist";
-import type { EventBus, PDFViewer } from "pdfjs-dist/legacy/web/pdf_viewer.mjs";
-import type { PDFViewerOptions } from "pdfjs-dist/types/web/pdf_viewer";
 import React, {
   type PointerEventHandler,
   PureComponent,
   type RefObject,
 } from "react";
 import { type Root, createRoot } from "react-dom/client";
+
+import type { PDFDocumentProxy } from "pdfjs-dist";
+import type { EventBus, PDFViewer } from "pdfjs-dist/legacy/web/pdf_viewer.mjs";
+import type { PDFViewerOptions } from "pdfjs-dist/types/web/pdf_viewer";
 import { debounce } from "ts-debounce";
-import { ZoomIn } from "../icons/ZoomIn";
-import { ZoomOut } from "../icons/ZoomOut";
-import { scaledToViewport, viewportToScaled } from "../lib/coordinates";
-import { getAreaAsPNG } from "../lib/get-area-as-png";
-import { getBoundingRect } from "../lib/get-bounding-rect";
-import { getClientRects } from "../lib/get-client-rects";
+import { ZoomIn } from "@pdf-reader/icons/ZoomIn";
+import { ZoomOut } from "@pdf-reader/icons/ZoomOut";
+import {
+  scaledToViewport,
+  viewportToScaled,
+} from "@pdf-reader/lib/coordinates";
+import { getAreaAsPNG } from "@pdf-reader/lib/get-area-as-png";
+import { getBoundingRect } from "@pdf-reader/lib/get-bounding-rect";
+import { getClientRects } from "@pdf-reader/lib/get-client-rects";
 import {
   findOrCreateContainerLayer,
   getPageFromElement,
   getPagesFromRange,
   getWindow,
   isHTMLElement,
-} from "../lib/pdfjs-dom";
+} from "@pdf-reader/lib/pdfjs-dom";
 import type {
   IHighlight,
   LTWH,
@@ -28,10 +32,10 @@ import type {
   Position,
   Scaled,
   ScaledPosition,
-} from "../types";
-import { HighlightLayer } from "./HighlightLayer";
-import { MouseSelection } from "./MouseSelection";
-import { TipContainer } from "./TipContainer";
+} from "@pdf-reader/types";
+import { HighlightLayer } from "@pdf-reader/components/HighlightLayer";
+import { MouseSelection } from "@pdf-reader/components/MouseSelection";
+import { TipContainer } from "@pdf-reader/components/TipContainer";
 
 export type T_ViewportHighlight<T_HT> = { position: Position } & T_HT;
 

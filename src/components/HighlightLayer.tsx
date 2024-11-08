@@ -1,10 +1,15 @@
 import type { PDFViewer } from "pdfjs-dist/web/pdf_viewer.mjs";
-import { viewportToScaled } from "../lib/coordinates";
-import type { IHighlight, LTWH, Position, ScaledPosition } from "../types";
+import { viewportToScaled } from "@pdf-reader/lib/coordinates";
+import type {
+  IHighlight,
+  LTWH,
+  Position,
+  ScaledPosition,
+} from "@pdf-reader/types";
 import type {
   IHighlightTransformParams,
   T_ViewportHighlight,
-} from "./PdfHighlighter";
+} from "@pdf-reader/components/PdfHighlighter";
 
 interface HighlightLayerProps<T_HT> {
   highlightsByPage: { [pageNumber: string]: Array<T_HT> };

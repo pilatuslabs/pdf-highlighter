@@ -1,5 +1,5 @@
-import type { LTWHP } from "../types.js";
-import { isHTMLCanvasElement } from "./pdfjs-dom";
+import type { LTWHP } from "@pdf-reader/types";
+import { isHTMLCanvasElement } from "@pdf-reader/lib/pdfjs-dom";
 
 export const getAreaAsPNG = (
   canvas: HTMLCanvasElement,

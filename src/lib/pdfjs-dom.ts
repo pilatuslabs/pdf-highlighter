@@ -1,4 +1,4 @@
-import type { Page } from "../types";
+import type { Page } from "@pdf-reader/types";
 
 export const getDocument = (element: Element): Document =>
   element.ownerDocument || document;

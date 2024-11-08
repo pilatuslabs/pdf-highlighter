@@ -1,12 +1,12 @@
-export { PdfHighlighter } from "./components/PdfHighlighter";
-export { Tip } from "./components/Tip";
-export { Highlight } from "./components/Highlight";
-export { Popup } from "./components/Popup";
-export { AreaHighlight } from "./components/AreaHighlight";
-export { PdfLoader } from "./components/PdfLoader";
-export { Spinner } from "./components/Spinner";
-export { Sidebar } from "./components/Sidebar";
+export { PdfHighlighter } from "@pdf-reader/components/PdfHighlighter";
+export { Tip } from "@pdf-reader/components/Tip";
+export { Highlight } from "@pdf-reader/components/Highlight";
+export { Popup } from "@pdf-reader/components/Popup";
+export { AreaHighlight } from "@pdf-reader/components/AreaHighlight";
+export { PdfLoader } from "@pdf-reader/components/PdfLoader";
+export { Spinner } from "@pdf-reader/components/Spinner";
+export { Sidebar } from "@pdf-reader/components/Sidebar";
 
-import "./style/index.css";
+import "@pdf-reader/style/index.css";
 
-export * from "./types";
+export * from "@pdf-reader/types";

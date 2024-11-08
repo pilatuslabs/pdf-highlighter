@@ -1,4 +1,4 @@
-import type { ViewportHighlight } from "../types";
+import type { ViewportHighlight } from "@pdf-reader/types";
 
 interface Props {
   highlight: ViewportHighlight;

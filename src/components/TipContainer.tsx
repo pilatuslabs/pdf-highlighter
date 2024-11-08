@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import type { LTWHP } from "../types";
+import type { LTWHP } from "@pdf-reader/types";
 
 interface Props {
   children: JSX.Element | null;

@@ -96,11 +96,13 @@ export class PdfLoader extends Component<Props, State> {
     return (
       <>
         <span ref={this.documentRef} />
-        {error
-          ? this.renderError()
-          : !pdfDocument || !children
-            ? beforeLoad
-            : children(pdfDocument)}
+        {error ? (
+          this.renderError()
+        ) : !pdfDocument || !children ? (
+          <div className="w-[75vw]">{beforeLoad}</div>
+        ) : (
+          children(pdfDocument)
+        )}
       </>
     );
   }

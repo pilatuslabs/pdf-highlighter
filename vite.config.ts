@@ -5,16 +5,19 @@ import dts from "vite-plugin-dts";
 
 export default defineConfig({
   plugins: [react(), dts()],
-  build: {
-    minify: false,
-    lib: {
-      entry: "./src/index.ts",
-      formats: ["es"],
-      fileName: (format, entryName) => `${entryName}.js`,
+  resolve: {
+    alias: {
+      "@pdf-reader": path.resolve(__dirname, "src"),
     },
+  },
+  build: {
     rollupOptions: {
       output: {
-        preserveModules: true,
+        assetFileNames: (assetInfo) => {
+          return assetInfo.name === "index.css"
+            ? "pdf-reader.css"
+            : assetInfo.name || "asset-[name]-[hash].[ext]";
+        },
       },
       external: [
         "react",

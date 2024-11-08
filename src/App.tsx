@@ -9,13 +9,11 @@ import {
   Sidebar,
   Spinner,
   Tip,
-} from "./index";
+} from "@pdf-reader/index";
 import type { IHighlight, IPdfAndHighlights, NewHighlight } from "./index";
 
-import { testHighlights as _testHighlights } from "../example/src/data/test-feedback";
+import { testHighlights as _testHighlights } from "@pdf-reader/data/test-feedback";
 
-import "./style/App.css";
-import "../dist/style.css";
 import type { PDFDocumentProxy } from "pdfjs-dist";
 
 const testHighlights: IPdfAndHighlights = _testHighlights;

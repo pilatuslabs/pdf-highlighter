@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { isHTMLElement } from "../lib/pdfjs-dom";
-import type { LTWH } from "../types.js";
+import { isHTMLElement } from "@pdf-reader/lib/pdfjs-dom";
+import type { LTWH } from "@pdf-reader/types";
 
 interface Coords {
   x: number;

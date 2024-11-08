@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MouseMonitor } from "./MouseMonitor";
+import { MouseMonitor } from "@pdf-reader/components/MouseMonitor";
 
 interface Props {
   onMouseOver: (content: JSX.Element) => void;
