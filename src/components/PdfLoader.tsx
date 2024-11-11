@@ -1,11 +1,9 @@
 import { GlobalWorkerOptions, getDocument } from "pdfjs-dist";
 import type { PDFDocumentProxy } from "pdfjs-dist";
-import React, { Component } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 interface Props {
-  /** See `GlobalWorkerOptionsType`. */
   workerSrc: string;
-
   url: string;
   beforeLoad: JSX.Element;
   errorMessage?: JSX.Element;
@@ -15,104 +13,77 @@ interface Props {
   cMapPacked?: boolean;
 }
 
-interface State {
-  pdfDocument: PDFDocumentProxy | null;
-  error: Error | null;
-}
+export const PdfLoader: React.FC<Props> = ({
+  workerSrc = "https://unpkg.com/pdfjs-dist@4.4.168/build/pdf.worker.min.mjs",
+  url,
+  beforeLoad,
+  errorMessage,
+  children,
+  onError,
+  cMapUrl,
+  cMapPacked,
+}) => {
+  const [pdfDocument, setPdfDocument] = useState<PDFDocumentProxy | null>(null);
+  const [error, setError] = useState<Error | null>(null);
+  const documentRef = useRef<HTMLElement>(null);
 
-export class PdfLoader extends Component<Props, State> {
-  state: State = {
-    pdfDocument: null,
-    error: null,
-  };
+  // biome-ignore lint: cant put pdfDocument as a dependency
+  useEffect(() => {
+    load();
 
-  static defaultProps = {
-    workerSrc: "https://unpkg.com/pdfjs-dist@4.4.168/build/pdf.worker.min.mjs",
-  };
+    return () => {
+      pdfDocument?.destroy();
+    };
+  }, [url]);
 
-  documentRef = React.createRef<HTMLElement>();
-
-  componentDidMount() {
-    this.load();
-  }
-
-  componentWillUnmount() {
-    const { pdfDocument: discardedDocument } = this.state;
-    if (discardedDocument) {
-      discardedDocument.destroy();
-    }
-  }
-
-  componentDidUpdate({ url }: Props) {
-    if (this.props.url !== url) {
-      this.load();
-    }
-  }
-
-  componentDidCatch(error: Error) {
-    const { onError } = this.props;
-
-    if (onError) {
-      onError(error);
-    }
-
-    this.setState({ pdfDocument: null, error });
-  }
-
-  load() {
-    const { ownerDocument = document } = this.documentRef.current || {};
-    const { url, cMapUrl, cMapPacked, workerSrc } = this.props;
-    const { pdfDocument: discardedDocument } = this.state;
-    this.setState({ pdfDocument: null, error: null });
+  const load = () => {
+    const { ownerDocument = document } = documentRef.current || {};
+    setPdfDocument(null);
+    setError(null);
 
     if (typeof workerSrc === "string") {
       GlobalWorkerOptions.workerSrc = workerSrc;
     }
 
     Promise.resolve()
-      .then(() => discardedDocument?.destroy())
+      .then(() => pdfDocument?.destroy())
       .then(() => {
-        if (!url) {
-          return;
-        }
+        if (!url) return;
 
         const document = {
-          ...this.props,
           ownerDocument,
+          url,
           cMapUrl,
           cMapPacked,
         };
 
-        return getDocument(document).promise.then((pdfDocument) => {
-          this.setState({ pdfDocument });
+        return getDocument(document).promise.then((loadedPdfDocument) => {
+          setPdfDocument(loadedPdfDocument);
         });
       })
-      .catch((e) => this.componentDidCatch(e));
-  }
+      .catch((e) => {
+        if (onError) onError(e);
+        setError(e);
+      });
+  };
 
-  render() {
-    const { children, beforeLoad } = this.props;
-    const { pdfDocument, error } = this.state;
-    return (
-      <>
-        <span ref={this.documentRef} />
-        {error ? (
-          this.renderError()
-        ) : !pdfDocument || !children ? (
-          <div className="w-[75vw]">{beforeLoad}</div>
-        ) : (
-          children(pdfDocument)
-        )}
-      </>
-    );
-  }
-
-  renderError() {
-    const { errorMessage } = this.props;
+  const renderError = () => {
     if (errorMessage) {
-      return React.cloneElement(errorMessage, { error: this.state.error });
+      return React.cloneElement(errorMessage, { error });
     }
-
     return null;
-  }
-}
+  };
+
+  return (
+    <>
+      <span ref={documentRef} />
+      {error ? (
+        renderError()
+      ) : !pdfDocument || !children ? (
+        <div className="w-[75vw]">{beforeLoad}</div>
+      ) : (
+        children(pdfDocument)
+      )}
+    </>
+  );
+};

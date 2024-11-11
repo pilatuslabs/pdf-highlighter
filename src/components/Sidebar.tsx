@@ -1,7 +1,7 @@
-import { useState } from "react";
 import { ChevronDown } from "@pdf-reader/icons/ChevronDown";
 import { ChevronUp } from "@pdf-reader/icons/ChevronUp";
 import type { IHighlight } from "@pdf-reader/types";
+import { useState } from "react";
 
 interface Props {
   highlights: Array<IHighlight>;

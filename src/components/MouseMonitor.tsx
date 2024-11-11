@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useRef, useEffect } from "react";
 
 interface Props {
   onMoveAway: () => void;
@@ -7,54 +7,39 @@ interface Props {
   children: JSX.Element;
 }
 
-export class MouseMonitor extends Component<Props> {
-  container: HTMLDivElement | null = null;
-  unsubscribe = () => {};
+export const MouseMonitor: React.FC<Props> = ({
+  onMoveAway,
+  paddingX,
+  paddingY,
+  children,
+  ...restProps
+}) => {
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  onMouseMove = (event: MouseEvent) => {
-    if (!this.container) {
-      return;
-    }
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
 
-    const { onMoveAway, paddingX, paddingY } = this.props;
+    const onMouseMove = (event: MouseEvent) => {
+      const { clientX, clientY } = event;
+      const { left, top, width, height } = container.getBoundingClientRect();
 
-    const { clientX, clientY } = event;
+      const inBoundsX =
+        clientX > left - paddingX && clientX < left + width + paddingX;
+      const inBoundsY =
+        clientY > top - paddingY && clientY < top + height + paddingY;
 
-    // TODO: see if possible to optimize
-    const { left, top, width, height } = this.container.getBoundingClientRect();
+      if (!(inBoundsX && inBoundsY)) {
+        onMoveAway();
+      }
+    };
 
-    const inBoundsX =
-      clientX > left - paddingX && clientX < left + width + paddingX;
-    const inBoundsY =
-      clientY > top - paddingY && clientY < top + height + paddingY;
+    const doc = container.ownerDocument;
+    doc.addEventListener("mousemove", onMouseMove);
+    return () => doc.removeEventListener("mousemove", onMouseMove);
+  }, [onMoveAway, paddingX, paddingY]);
 
-    const isNear = inBoundsX && inBoundsY;
-
-    if (!isNear) {
-      onMoveAway();
-    }
-  };
-
-  attachRef = (ref: HTMLDivElement | null) => {
-    this.container = ref;
-    this.unsubscribe();
-
-    if (ref) {
-      const { ownerDocument: doc } = ref;
-      doc.addEventListener("mousemove", this.onMouseMove);
-      this.unsubscribe = () => {
-        doc.removeEventListener("mousemove", this.onMouseMove);
-      };
-    }
-  };
-
-  render() {
-    // eslint-disable-next-line
-    const { onMoveAway, paddingX, paddingY, children, ...restProps } =
-      this.props;
-
-    return (
-      <div ref={this.attachRef}>{React.cloneElement(children, restProps)}</div>
-    );
-  }
-}
+  return (
+    <div ref={containerRef}>{React.cloneElement(children, restProps)}</div>
+  );
+};

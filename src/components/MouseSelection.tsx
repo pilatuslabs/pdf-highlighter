@@ -1,6 +1,12 @@
-import { useCallback, useEffect, useRef, useState } from "react";
 import { isHTMLElement } from "@pdf-reader/lib/pdfjs-dom";
 import type { LTWH } from "@pdf-reader/types";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 
 interface Coords {
   x: number;
@@ -59,9 +65,16 @@ export function MouseSelection({
     setLocked(false);
   }, [onDragEnd]);
 
-  useEffect(() => {
+  // Use ref to track previous visibility state
+  const prevVisibleRef = useRef(false);
+
+  // Use layoutEffect instead of effect to handle visibility changes
+  useLayoutEffect(() => {
     const isVisible = Boolean(start && end);
-    onChange(isVisible);
+    if (prevVisibleRef.current !== isVisible) {
+      prevVisibleRef.current = isVisible;
+      onChange(isVisible);
+    }
   }, [start, end, onChange]);
 
   useEffect(() => {
