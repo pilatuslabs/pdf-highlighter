@@ -1,5 +1,5 @@
 import { Feedback } from "@pdf-reader/components/feedback";
-import { CloseIcon } from "@pdf-reader/icons/closeIcon";
+import { CloseIcon } from "@pdf-reader/icons/close-icon";
 import type { IHighlight } from "@pdf-reader/types";
 
 interface Props {

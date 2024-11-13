@@ -1,5 +1,5 @@
-import { ChevronDown } from "@pdf-reader/icons/ChevronDown";
-import { ChevronUp } from "@pdf-reader/icons/ChevronUp";
+import { ChevronDown } from "@pdf-reader/icons/chevron-down";
+import { ChevronUp } from "@pdf-reader/icons/chevron-up";
 import type { IHighlight } from "@pdf-reader/types";
 
 interface Props {

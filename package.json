@@ -20,11 +20,9 @@
   "main": "./dist/src/index.js",
   "style": "./dist/style.css",
   "scripts": {
-    "start": "npm run dev",
-    "dev": "vite build &&  vite",
-    "build": "npm run clean && npm run compile && vite build && npm run build:example",
+    "start": "vite",
+    "build": "npm run clean && npm run compile && vite build ",
     "compile": "tsc --noEmit",
-    "build:example": "vite build && (cd ./example && vite build)",
     "test": "npm run build && npm run lint && npm run test:e2e",
     "test:e2e": "playwright test",
     "format": "biome format --write",

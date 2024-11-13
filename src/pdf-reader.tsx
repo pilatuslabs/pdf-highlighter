@@ -1,5 +1,3 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-
 import {
   AreaHighlight,
   DesktopSidebar,
@@ -9,11 +7,17 @@ import {
   Popup,
   Spinner,
   Tip,
+  MobileSidebar,
 } from "@pdf-reader/index";
-import type { IHighlight, IPdfAndHighlights, NewHighlight } from "./index";
+import { useCallback, useEffect, useRef, useState } from "react";
+
+import type {
+  IHighlight,
+  IPdfAndHighlights,
+  NewHighlight,
+} from "@pdf-reader/types";
 
 import type { PDFDocumentProxy } from "pdfjs-dist";
-import { MobileSidebar } from "./components/sidebar/mobile-sidebar";
 import { useMobileBreakpoint } from "./hooks/useMobileBreakpoint";
 
 const getNextId = () => String(Math.random()).slice(2);
@@ -32,13 +36,13 @@ interface Props {
 export function PdfReader({ data }: Props) {
   const [url] = useState(data.url);
   const [highlights, setHighlights] = useState<Array<IHighlight>>(
-    data.highlights ? [...data.highlights] : [],
+    data.highlights ? [...data.highlights] : []
   );
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
   const isMobileBreakpoint = useMobileBreakpoint();
   const [pdfScaleValue, setPdfScaleValue] = useState(() =>
-    isMobileBreakpoint ? "page-width" : "auto",
+    isMobileBreakpoint ? "page-width" : "auto"
   );
 
   useEffect(() => {
@@ -64,7 +68,7 @@ export function PdfReader({ data }: Props) {
       window.removeEventListener(
         "hashchange",
         scrollToHighlightFromHash,
-        false,
+        false
       );
     };
   }, [scrollToHighlightFromHash]);
@@ -96,7 +100,7 @@ export function PdfReader({ data }: Props) {
           position,
           content,
           hideTipAndSelection,
-          transformSelection,
+          transformSelection
         ) => (
           <Tip
             onOpen={transformSelection}

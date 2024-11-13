@@ -1,5 +1,5 @@
 import { createRoot } from "react-dom/client";
-import { PdfReader } from "./pdfReader";
+import { PdfReader } from "@pdf-reader/pdf-reader";
 
 import { testHighlights as _testHighlights } from "@pdf-reader/data/test-feedback";
 import type { IPdfAndHighlights } from "./types";

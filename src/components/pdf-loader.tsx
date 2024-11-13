@@ -3,7 +3,7 @@ import type { PDFDocumentProxy } from "pdfjs-dist";
 import React, { useState, useEffect, useRef } from "react";
 
 interface Props {
-  workerSrc: string;
+  workerSrc?: string;
   url: string;
   beforeLoad: JSX.Element;
   errorMessage?: JSX.Element;

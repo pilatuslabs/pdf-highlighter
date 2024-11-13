@@ -1,7 +1,7 @@
 import type {
   IHighlightTransformParams,
   T_ViewportHighlight,
-} from "@pdf-reader/components/PdfHighlighter";
+} from "@pdf-reader/components/pdf-highlighter";
 import { viewportToScaled } from "@pdf-reader/lib/coordinates";
 import type {
   IHighlight,

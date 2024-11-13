@@ -1,4 +1,4 @@
-import { MouseMonitor } from "@pdf-reader/components/MouseMonitor";
+import { MouseMonitor } from "@pdf-reader/components/mouse-monitor";
 import { useState } from "react";
 
 interface Props {

@@ -1,9 +1,9 @@
-import { HighlightLayer } from "@pdf-reader/components/HighlightLayer";
-import { MouseSelection } from "@pdf-reader/components/MouseSelection";
-import { TipContainer } from "@pdf-reader/components/TipContainer";
+import { HighlightLayer } from "@pdf-reader/components/highlight-layer";
+import { MouseSelection } from "@pdf-reader/components/mouse-selection";
+import { TipContainer } from "@pdf-reader/components/tip-container";
 import { useMobileBreakpoint } from "@pdf-reader/hooks/useMobileBreakpoint";
-import { ZoomIn } from "@pdf-reader/icons/ZoomIn";
-import { ZoomOut } from "@pdf-reader/icons/ZoomOut";
+import { ZoomIn } from "@pdf-reader/icons/zoom-in";
+import { ZoomOut } from "@pdf-reader/icons/zoom-out";
 import {
   scaledToViewport,
   viewportToScaled,
@@ -42,7 +42,7 @@ import { debounce } from "ts-debounce";
 
 export type T_ViewportHighlight<T_HT> = { position: Position } & T_HT;
 
-interface IHighlightTransformParams<T_HT> {
+export interface IHighlightTransformParams<T_HT> {
   highlight: T_ViewportHighlight<T_HT>;
   index: number;
   setTip: (
