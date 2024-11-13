@@ -12,13 +12,9 @@ import {
 } from "@pdf-reader/index";
 import type { IHighlight, IPdfAndHighlights, NewHighlight } from "./index";
 
-import { testHighlights as _testHighlights } from "@pdf-reader/data/test-feedback";
-
 import type { PDFDocumentProxy } from "pdfjs-dist";
 import { MobileSidebar } from "./components/sidebar/mobile-sidebar";
 import { useMobileBreakpoint } from "./hooks/useMobileBreakpoint";
-
-const testHighlights: IPdfAndHighlights = _testHighlights;
 
 const getNextId = () => String(Math.random()).slice(2);
 
@@ -29,10 +25,14 @@ const resetHash = () => {
   document.location.hash = "";
 };
 
-export function PdfReader() {
-  const [url] = useState(testHighlights.url);
+interface Props {
+  data: IPdfAndHighlights;
+}
+
+export function PdfReader({ data }: Props) {
+  const [url] = useState(data.url);
   const [highlights, setHighlights] = useState<Array<IHighlight>>(
-    testHighlights.highlights ? [...testHighlights.highlights] : [],
+    data.highlights ? [...data.highlights] : [],
   );
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
