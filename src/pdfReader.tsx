@@ -2,11 +2,11 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import {
   AreaHighlight,
+  DesktopSidebar,
   Highlight,
   PdfHighlighter,
   PdfLoader,
   Popup,
-  Sidebar,
   Spinner,
   Tip,
 } from "@pdf-reader/index";
@@ -15,6 +15,8 @@ import type { IHighlight, IPdfAndHighlights, NewHighlight } from "./index";
 import { testHighlights as _testHighlights } from "@pdf-reader/data/test-feedback";
 
 import type { PDFDocumentProxy } from "pdfjs-dist";
+import { MobileSidebar } from "./components/sidebar/mobile-sidebar";
+import { useMobileBreakpoint } from "./hooks/useMobileBreakpoint";
 
 const testHighlights: IPdfAndHighlights = _testHighlights;
 
@@ -27,12 +29,23 @@ const resetHash = () => {
   document.location.hash = "";
 };
 
-export function App() {
+export function PdfReader() {
   const [url] = useState(testHighlights.url);
   const [highlights, setHighlights] = useState<Array<IHighlight>>(
     testHighlights.highlights ? [...testHighlights.highlights] : [],
   );
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
+  const isMobileBreakpoint = useMobileBreakpoint();
+  const [pdfScaleValue, setPdfScaleValue] = useState(() =>
+    isMobileBreakpoint ? "page-width" : "auto",
+  );
+
+  useEffect(() => {
+    isMobileBreakpoint
+      ? setPdfScaleValue("page-width")
+      : setPdfScaleValue("auto");
+  }, [isMobileBreakpoint]);
 
   const scrollViewerTo = useRef((highlight: IHighlight) => {
     // Implement scrolling logic here
@@ -72,6 +85,7 @@ export function App() {
     return (
       <PdfHighlighter
         pdfDocument={pdfDocument}
+        pdfScaleValue={pdfScaleValue}
         enableAreaSelection={(event) => event.altKey}
         onScrollChange={resetHash}
         scrollRef={(scrollTo) => {
@@ -129,8 +143,13 @@ export function App() {
         highlights={highlights}
         currentPage={currentPage}
         updateCurrentPage={(updatedPage) => setCurrentPage(updatedPage)}
+        openDrawer={openDrawer}
       />
     );
+  };
+
+  const openDrawer = () => {
+    setIsDrawerOpen(true);
   };
 
   return (
@@ -138,7 +157,34 @@ export function App() {
       <PdfLoader url={url} beforeLoad={<Spinner />}>
         {(pdfDocument) => renderPage(pdfDocument)}
       </PdfLoader>
-      <Sidebar highlights={highlights} currentPage={currentPage} />
+
+      {isMobileBreakpoint && (
+        <>
+          <div
+            className={`
+        absolute top-0 bottom-0 right-0 left-0
+        bg-black/40
+        bg-blend-color
+        z-20
+        transition-opacity
+        duration-300
+        ease-in-out
+        ${isDrawerOpen ? "opacity-100" : "opacity-0 pointer-events-none"}
+      `}
+            onClick={() => setIsDrawerOpen(false)}
+          />
+          <MobileSidebar
+            highlights={highlights}
+            currentPage={currentPage}
+            closeSideBar={() => setIsDrawerOpen(false)}
+            isOpen={isDrawerOpen}
+          />
+        </>
+      )}
+      {/* )} */}
+      {!isMobileBreakpoint && (
+        <DesktopSidebar highlights={highlights} currentPage={currentPage} />
+      )}
     </div>
   );
 }

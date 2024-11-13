@@ -1,7 +1,7 @@
 import { createRoot } from "react-dom/client";
-import { App } from "./App";
+import { PdfReader } from "./pdfReader";
 
 // biome-ignore lint/style/noNonNullAssertion: Root element must be there
 const container = document.getElementById("root")!;
 const root = createRoot(container);
-root.render(<App />);
+root.render(<PdfReader />);

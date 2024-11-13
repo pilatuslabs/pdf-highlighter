@@ -1,6 +1,7 @@
 import { HighlightLayer } from "@pdf-reader/components/HighlightLayer";
 import { MouseSelection } from "@pdf-reader/components/MouseSelection";
 import { TipContainer } from "@pdf-reader/components/TipContainer";
+import { useMobileBreakpoint } from "@pdf-reader/hooks/useMobileBreakpoint";
 import { ZoomIn } from "@pdf-reader/icons/ZoomIn";
 import { ZoomOut } from "@pdf-reader/icons/ZoomOut";
 import {
@@ -73,6 +74,7 @@ interface Props<T_HT> {
   pdfViewerOptions?: PDFViewerOptions;
   currentPage: number;
   updateCurrentPage: (updatedPage: number) => void;
+  openDrawer: (isDrawerOpen: boolean) => void;
 }
 
 const EMPTY_ID = "empty-id";
@@ -89,6 +91,7 @@ export function PdfHighlighter<T_HT extends IHighlight>({
   pdfViewerOptions,
   currentPage,
   updateCurrentPage,
+  openDrawer,
 }: Props<T_HT>) {
   const [state, setState] = useState<{
     ghostHighlight: {
@@ -119,6 +122,8 @@ export function PdfHighlighter<T_HT extends IHighlight>({
     scalePercentage: 100,
     currentScale: 100,
   });
+
+  const isMobileBreakpoint = useMobileBreakpoint();
 
   const viewerRef = useRef<PDFViewer>();
   const containerNodeRef = useRef<HTMLDivElement>(null);
@@ -315,7 +320,11 @@ export function PdfHighlighter<T_HT extends IHighlight>({
     (e: { pageNumber: number }) => {
       const newCurrentPage = e.pageNumber;
       const previousPageNumber = currentPage;
-      if (newCurrentPage !== previousPageNumber) {
+      console.log("page", newCurrentPage, previousPageNumber);
+      if (
+        newCurrentPage !== previousPageNumber ||
+        (newCurrentPage === 1 && previousPageNumber === 1)
+      ) {
         updateCurrentPage(newCurrentPage);
       }
     },
@@ -700,6 +709,15 @@ export function PdfHighlighter<T_HT extends IHighlight>({
             {`${state.currentScale}%`}
           </span>
         </div>
+        {isMobileBreakpoint && (
+          <button
+            className="bg-blue-700 text-white px-4 py-2 rounded-md"
+            type="submit"
+            onClick={() => openDrawer(true)}
+          >
+            Open AI notes
+          </button>
+        )}
         <div className="text-sm text-gray-600">Page {currentPage}</div>
       </div>
       <div className="flex-1 relative h-full">

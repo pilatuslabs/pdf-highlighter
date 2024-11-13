@@ -5,7 +5,7 @@ export { Popup } from "@pdf-reader/components/Popup";
 export { AreaHighlight } from "@pdf-reader/components/AreaHighlight";
 export { PdfLoader } from "@pdf-reader/components/PdfLoader";
 export { Spinner } from "@pdf-reader/components/Spinner";
-export { Sidebar } from "@pdf-reader/components/Sidebar";
+export { DesktopSidebar } from "@pdf-reader/components/sidebar/desktop-sidebar";
 
 import "@pdf-reader/style/index.css";
 
