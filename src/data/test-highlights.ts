@@ -4,7 +4,7 @@ export const testHighlights = {
   highlights: [
     {
       content: {
-        text: " Type Checking for JavaScript",
+        text: " Precision Type Inference in FLow",
       },
       position: {
         boundingRect: {

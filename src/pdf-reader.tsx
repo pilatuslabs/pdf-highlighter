@@ -80,7 +80,7 @@ export function PdfReader({ data }: Props) {
   const addHighlight = (highlight: NewHighlight) => {
     console.log("Saving highlight", highlight);
     setHighlights((prevHighlights) => [
-      { ...highlight, id: getNextId(), isPageFeedback: true }, // TODO : We're assuming page feedback , remove this assumption later.
+      { ...highlight, id: getNextId(), isPageFeedback: false },
       ...prevHighlights,
     ]);
   };

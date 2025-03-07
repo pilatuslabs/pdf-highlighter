@@ -31,7 +31,7 @@ export const testHighlights = {
         text: "Flow or TypeScript?",
         emoji: "🔥",
       },
-      isPageFeedback: true,
+      isPageFeedback: false,
       id: "8245652131754351",
     },
     {
