@@ -5,9 +5,12 @@ import { SideBarContent } from "./sidebar-content";
 interface Props {
   highlights: Array<IHighlight>;
   currentPage: number;
+  isOpen: boolean;
+  toggleDesktopSidebar: () => void;
 }
 
-export function DesktopSidebar({ highlights, currentPage }: Props) {
+export function DesktopSidebar({ highlights, currentPage, isOpen, toggleDesktopSidebar }: Props) {
+  
   const { filteredHighlights, expandedHighlights, toggleHighlight } =
     useSidebar(highlights, currentPage);
 
@@ -17,6 +20,8 @@ export function DesktopSidebar({ highlights, currentPage }: Props) {
         toggleHighlight={toggleHighlight}
         filteredHighlights={filteredHighlights}
         expandedHighlights={expandedHighlights}
+        toggleSideBar={toggleDesktopSidebar}
+        isOpen={isOpen}
       />
     </div>
   );

@@ -22,6 +22,7 @@ export const useSidebar = (
   const filteredHighlights = highlights.filter(
     (highlight) => highlight.position.pageNumber === currentPage,
   );
+  
   return {
     filteredHighlights,
     expandedHighlights,

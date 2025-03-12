@@ -40,6 +40,7 @@ export function PdfReader({ data }: Props) {
   );
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
+  const [isDesktopSidebarOpen, setIsDesktopSidebarOpen] = useState<boolean>(true);
   const isMobileBreakpoint = useMobileBreakpoint();
   const [pdfScaleValue, setPdfScaleValue] = useState(() =>
     isMobileBreakpoint ? "page-width" : "auto"
@@ -158,7 +159,12 @@ export function PdfReader({ data }: Props) {
 
   return (
     <div className="flex h-screen">
-      <PdfLoader url={url} beforeLoad={<Spinner />}>
+      <PdfLoader 
+      url={url} 
+      beforeLoad={<Spinner />} 
+      isSidebarOpen={isDesktopSidebarOpen} 
+      openSidebar={() => setIsDesktopSidebarOpen(!isDesktopSidebarOpen)}
+      >
         {(pdfDocument) => renderPage(pdfDocument)}
       </PdfLoader>
 
@@ -185,10 +191,16 @@ export function PdfReader({ data }: Props) {
           />
         </>
       )}
-      {/* )} */}
-      {!isMobileBreakpoint && (
-        <DesktopSidebar highlights={highlights} currentPage={currentPage} />
+
+      {!isMobileBreakpoint && isDesktopSidebarOpen && (
+        <DesktopSidebar 
+        highlights={highlights} 
+        currentPage={currentPage} 
+        isOpen ={isDesktopSidebarOpen} 
+        toggleDesktopSidebar = {() => setIsDesktopSidebarOpen(!isDesktopSidebarOpen)} 
+        />
       )}
+
     </div>
   );
 }
