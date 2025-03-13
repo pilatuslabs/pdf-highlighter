@@ -35,10 +35,12 @@ export function MobileSidebar({
     `}
     >
       <SideBarContent
-        closeSideBar={closeSideBar}
+        
         toggleHighlight={toggleHighlight}
         filteredHighlights={filteredHighlights}
         expandedHighlights={expandedHighlights}
+        isOpen={isOpen}
+        toggleSideBar={closeSideBar}
       />
     </div>
   );

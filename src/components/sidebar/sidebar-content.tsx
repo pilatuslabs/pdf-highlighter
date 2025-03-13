@@ -1,12 +1,13 @@
 import { Feedback } from "@pdf-reader/components/feedback";
 import { CloseIcon } from "@pdf-reader/icons/close-icon";
+import { OpenIcon } from "@pdf-reader/icons/open-icon";
 import type { IHighlight } from "@pdf-reader/types";
 
 interface Props {
   filteredHighlights: IHighlight[];
   expandedHighlights: string[];
   toggleHighlight: (highlightId: string) => void;
-  toggleSideBar?: () => void;
+  toggleSideBar: () => void;
   isOpen: boolean;
 }
 
@@ -22,7 +23,11 @@ export function SideBarContent({
       <div className="z-50 h-14 border-b border-gray-200 flex items-center px-4 justify-between shadow-sm bg-white flex-shrink-0">
         <div className="text-sm text-gray-600">Page feedback</div>
         <div onClick={toggleSideBar}>
-          <CloseIcon isOpen={isOpen} />
+          {isOpen ? (
+            <CloseIcon toggleSideBar={toggleSideBar} />
+          ) : (
+            <OpenIcon toggleSideBar={toggleSideBar} />
+          )}
         </div>
       </div>
       <div className="flex-1 overflow-y-auto">

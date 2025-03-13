@@ -163,7 +163,8 @@ export function PdfReader({ data }: Props) {
       url={url} 
       beforeLoad={<Spinner />} 
       isSidebarOpen={isDesktopSidebarOpen} 
-      openSidebar={() => setIsDesktopSidebarOpen(!isDesktopSidebarOpen)}
+      toggleSidebar={() => setIsDesktopSidebarOpen(!isDesktopSidebarOpen)}
+      isMobileBreakpoint={isMobileBreakpoint}
       >
         {(pdfDocument) => renderPage(pdfDocument)}
       </PdfLoader>
@@ -200,7 +201,6 @@ export function PdfReader({ data }: Props) {
         toggleDesktopSidebar = {() => setIsDesktopSidebarOpen(!isDesktopSidebarOpen)} 
         />
       )}
-
     </div>
   );
 }
